@@ -32,17 +32,41 @@ def get_data():
             "health": health_info,
             "time": time,
         }
+        input_data2 = {
+            "age": age,
+            "jobs": occupation,
+            "name": username,
+            "time": time,
+            "gender": gender,
+            "health": health_info,
+            "weight": weight,
+            "hobbies": hobbies
+        }
 
         version = "1.0.0"
-        flow_name = f"@sigmarule/lifestyle1/{version}"
-
+        flow_name1 = f"@sigmarule/lifestyle1/{version}"
+        flow_name2 = f"@sigmarule/lifestyle2/{version}"
+        result1 = client.flow.execute(flow_name1, input_data)
+        result2 = client.flow.execute(flow_name2, input_data2)
+        print(result2)
+        input_data = {
+            "age": age,
+            "job": occupation,
+            "name": username,
+            "hobby": hobbies,
+            "gender": gender,
+            "weight": weight,
+            "output1": result1['result'],
+            "output2": result2['result']
+        }
+        flow_name = f"@sigmarule/lifestyle3/{version}"
         result = client.flow.execute(flow_name, input_data)
-
         data = [
             {'title': 'Activity to do', 'description': result['result']},
         ]
         return jsonify(data), 200
     except Exception as e:
+        print(e)
         return jsonify({"error": str(e)}), 500
 
 if _name_ == '_main_':
